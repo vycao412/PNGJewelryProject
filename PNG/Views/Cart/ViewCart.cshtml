@@ -1,0 +1,91 @@
+﻿@using PNG.Models
+@{
+    ViewBag.Title = "ViewCart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Cart cart = Session["CART"] as Cart;
+}
+@if (TempData["OUT_OF_STOCK"] != null)
+{
+    foreach (string item in TempData["OUT_OF_STOCK"] as List<string>)
+    {
+        <div class="alert alert-danger" role="alert">
+            * @item
+        </div>
+    }
+}
+@if (@TempData["UPDATE_QUANTITY_CART"] != null)
+{
+    <div class="alert alert-primary" role="alert">
+        @TempData["UPDATE_QUANTITY_CART"]
+    </div>
+}
+@if (@TempData["DELETE_QUANTITY_CART"] != null)
+{
+    <div class="alert alert-primary" role="alert">
+        @TempData["DELETE_QUANTITY_CART"]
+    </div>
+}
+@if (Session["CART"] != null)
+{
+    if (cart.CartDetail != null && cart.CartDetail.Count > 0)
+    {
+        int count = 1;
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Product item in cart.CartDetail.Values)
+                {
+                    using (Html.BeginForm("Update", "Cart", new { id = item.ProductID }, FormMethod.Post))
+                    {
+                        <tr>
+                            <td>@(count++)</td>
+                            <td>@item.ProductName</td>
+                            <td>
+                                @Html.TextBox("quantity", item.Quantity, new { @class = "form-control mr-sm-2", @type = "number", @min = 1 })
+                            </td>
+                            <td>@item.Price $</td>
+                            <td>@(item.Quantity * item.Price) $</td>
+                            <td>
+                                <input type="submit" value="Update" class="btn btn-warning" />
+                                @Html.ActionLink("Delete", "Delete", "Cart", new { id = item.ProductID }, htmlAttributes: new { @class = "btn btn-danger" })
+                            </td>
+                        </tr> 
+                        }
+                    }
+            </tbody>
+        </table>
+        <h4 style="color:chocolate">Total: @cart.TotalPrice $</h4>
+        <div class="row">
+            <div class="col-3">
+                @Html.ActionLink("Tiếp tục mua hàng", "Index", "Home", null, htmlAttributes: new { @class = "btn btn-secondary btn-block" })
+            </div>
+            <div class="col-6"></div>
+            <div class="col-3">
+                @Html.ActionLink("Tiến hành đặt hàng", "CheckoutInfo", "Cart", null, htmlAttributes: new { @class = "btn btn-danger btn-block" })
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-secondary" role="alert">
+            <p class="text-center">Giỏ hàng của bạn chưa có sản phẩm</p>
+        </div>
+        @Html.ActionLink("Continue shopping", "Index", "Home", null, htmlAttributes: new { @class = "btn btn-secondary" })
+    }
+}
+else
+{
+    <div class="alert alert-secondary" role="alert">
+        <p class="text-center">Giỏ hàng của bạn chưa có sản phẩm</p>
+    </div>
+        @Html.ActionLink("Continue shopping", "Index", "Home",null, htmlAttributes: new { @class = "btn btn-secondary" })
+}

@@ -1,0 +1,85 @@
+﻿@using PNG.Models
+@{ 
+    var user = Session["USER"] as Account;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Công ty cổ phần đá quý</title>
+    @Styles.Render("~/Content/fontawesome")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            @Html.ActionLink("PNG", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })
+                    </li>
+                    @if (Session["USER"] != null && user.RoleID == 1)
+                    {
+                        @Html.ActionLink("Category", "Index", "Category", new { area = "" }, new { @class = "nav-link" })
+                        @Html.ActionLink("Product", "Index", "Product", new { area = "" }, new { @class = "nav-link" })
+                    }
+                    @if (Session["USER"] == null || (Session["USER"] != null && user.RoleID == 2))
+                    {
+                        <li class="nav-item">
+                            @Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })
+                        </li>
+                    } 
+                    @if (Session["USER"] != null && user.RoleID == 2)
+                    {
+                        <li class="nav-item">
+                            @Html.ActionLink("History Order", "History", "Cart", new { area = "" }, new { @class = "nav-link" })
+                        </li>
+                    }
+                    @if (Session["USER"] != null)
+                    {
+                        <li class="nav-item disabled">
+                            <a class="nav-link">Welcome @user.UserName</a>
+                        </li>
+                    }
+                </ul>
+                @if (Session["USER"] == null)
+                {
+                    @Html.ActionLink("Your Cart", "ViewCart", "Cart", new { area = "" }, new { @class = "btn btn-outline-success my-2 my-sm-0 nav-cart" })
+                    @Html.ActionLink("Login", "Login", "Home", new { area = "" }, new { @class = "btn btn-outline-success my-2 my-sm-0" })
+                }
+                else
+                {
+                    if (((Account)Session["USER"]).RoleID == 2)
+                    {
+                        @Html.ActionLink("Your Cart", "ViewCart", "Cart", new { area = "" }, new { @class = "btn btn-outline-success my-2 my-sm-0 nav-cart" })
+                    }
+                    @Html.ActionLink("Logout", "Logout", "Home", new { area = "" }, new { @class = "btn btn-outline-success my-2 my-sm-0" })
+                }
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        
+        @RenderBody()
+        @*<footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>*@
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+
+

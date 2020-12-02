@@ -1,0 +1,51 @@
+﻿@model PNG.Models.Product
+@using PNG.Models
+@{
+    ViewBag.Title = "Product Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+   
+    @if (@TempData["AddToCart"] != null)
+    {
+        <div class="alert alert-primary" role="alert">
+            @TempData["AddToCart"]
+        </div>
+    }
+    
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card">
+                <img src="~/Content/Resource/@Model.Image" class="card-img-top" alt="..." style="height:70vh;">
+            </div>
+        </div>
+        <div class="col-5">
+            <h4>Product Details</h4>
+            <hr />
+            <div class="card" style="height:60vh;">
+                <div class="card-body">
+                    <h4 class="card-title">@Model.ProductName</h4>
+                    <p class="card-text">Mã: @Model.ProductID</p>
+                    <h5 class="card-text price">Giá: $@Model.Price</h5>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <div class="extrInfo">
+                        <p style="margin-bottom: 1%">Giá sản phẩm thay đổi tuỳ trọng lượng vàng và đá</p>
+                        <p style="margin-bottom: 1%">Đổi sản phẩm trong 48h tại hệ thống cửa hàng PNG</p>
+                        <p style="margin-bottom: 1%">Miễn phí giao hàng toàn quốc từ 2 - 7 ngày làm việc</p>
+                    </div>
+      
+                    <br />
+                    @if (Session["USER"] == null || (Session["USER"] != null && ((Account)Session["USER"]).RoleID != 1))
+                    {
+                        <a href="/Cart/Add/@Model.ProductID" class="btn btn-primary btn-lg btn-block">Thêm vào giỏ hàng</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    

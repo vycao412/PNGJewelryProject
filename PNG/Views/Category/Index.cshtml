@@ -1,0 +1,60 @@
+﻿@model IEnumerable<PNG.Models.Category>
+@using PNG.Models
+@{
+    ViewBag.Title = "Category";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h4 class="text-center">LIST CATEGORY</h4>
+@if (@TempData["DELETE_CATEGORY"] != null)
+{
+    <div class="alert alert-primary" role="alert">
+        @TempData["DELETE_CATEGORY"]
+    </div>
+}
+@Html.ActionLink("Create New", "Create", "Category", htmlAttributes: new { @class = "btn btn-danger" })
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col-8">
+
+        <table class="table table-striped">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CategoryName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StatusID)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (Category item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryName)
+                    </td>
+                    
+                        @if (item.StatusID == 3)
+                        {
+                            <td>
+                                Available
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                Unavailable
+                            </td>
+                        }
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.CategoryID }, htmlAttributes: new { @class = "btn btn-danger" }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.CategoryID }, htmlAttributes: new { @class = "btn btn-warning" })
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+    </div>
+    <div class="col-2"></div>
+</div>

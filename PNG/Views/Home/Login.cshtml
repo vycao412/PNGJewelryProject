@@ -1,0 +1,43 @@
+﻿@model PNG.Models.Account
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <h5 class="card-title text-center">Sign in</h5>
+            <hr />
+            @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+            {
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email)
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(m => m.Email, "", new { @class = "form-control", @placeholder = "Email" })
+                     </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password)
+                    <div class="col-md-12">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
+                        <font color="red"><small>@TempData["LOGIN_FAIL"]</small></font>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" name="submit" class="btn btn-primary btn-block" value="Login" />
+                    <hr>
+                    <p class="o">OR</p>
+                    <a href="/Home/Register" class="btn btn-primary btn-block">Register</a>
+                </div>
+            }
+        </div>
+        <div class="col-4"></div>
+    </div>
+</div>
+
+
+
+
